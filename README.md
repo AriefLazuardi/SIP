@@ -82,7 +82,8 @@ Proyek ini dilisensikan di bawah MIT License.
 
 Untuk pertanyaan dan dukungan lebih lanjut, silakan hubungi:
 
-Nama: Arief Lazuardi
-Email: m.arieflazuardi@gmail.com
-GitHub: https://github.com/AriefLazuardi
+-   **Nama**: Arief Lazuardi
+-   **Email**: m.arieflazuardi@gmail.com
+-   **GitHub**: https://github.com/AriefLazuardi
+
 Terima kasih telah menggunakan SIP (Sistem Informasi Penjadwalan) MIN 2 Pontianak!
