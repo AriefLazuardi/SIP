@@ -16,6 +16,7 @@ export default {
             },
             colors: {
                 customColor: "#2b2b2b",
+                dangerColor: "#E6143E",
                 whiteColor: "#f1f1f1",
                 primaryColor: "#00b21d",
                 darkPrimaryColor: "#007713",

@@ -23,5 +23,8 @@
             ease-in-out 
             duration-200
         ']) }}>
+    <span class="material-icons mr-2">
+        save
+    </span>
     {{ $slot }}
 </button>
