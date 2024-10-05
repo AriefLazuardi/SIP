@@ -16,7 +16,7 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-sans antialiased" x-data="{ sidebarOpen: true }" @sidebar-toggle.window="sidebarOpen = $event.detail">
+    <body class="font-sans antialiased bg-whiteColor" x-data="{ sidebarOpen: true }" @sidebar-toggle.window="sidebarOpen = $event.detail">
     <div class="flex h-screen">
         <!-- Sidebar -->
         @include('layouts.sidebars.sidebar')
@@ -27,8 +27,8 @@
                 @include('layouts.navbars.navigation')
             </header>
 
-            <main :class="{'ml-48': sidebarOpen, '-ml-48': !sidebarOpen}" class="transition-all duration-300">
-                {{ $slot }}
+            <main :class="{'ml-72': sidebarOpen, 'ml-24': !sidebarOpen}" class="transition-all duration-300 m-10">
+                @yield('content')
             </main>
         </div>
     </div>
