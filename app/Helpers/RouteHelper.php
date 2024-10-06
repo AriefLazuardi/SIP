@@ -8,10 +8,10 @@ if (!function_exists('getDashboardRoute')) {
         } elseif (auth()->user()->hasRole('guru')) {
             return 'guru.dashboard';
         } elseif (auth()->user()->hasRole('wakakurikulum')) {
-            return 'waka.dashboard';
+            return 'wakilkurikulum.dashboard';
         }
         
         // Default route jika tidak ada yang cocok
-        return 'default.dashboard';
+        return 'dashboard';
     }
 }
