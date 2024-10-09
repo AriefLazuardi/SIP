@@ -1,8 +1,8 @@
 <div>
     <script>
-        function confirmDelete(route) {
+        function confirmDelete(route, text) {
             Swal.fire({
-                text: 'Apakah Anda yakin ingin menghapus akun ini?',
+                text: 'Anda yakin ingin menghapus data ini?',
                 icon: 'warning',
                 showDenyButton: true,
                 confirmButtonText: 'Hapus',
