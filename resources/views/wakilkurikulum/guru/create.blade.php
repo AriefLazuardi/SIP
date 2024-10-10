@@ -41,8 +41,8 @@
         <!-- Submit button -->
         <div class="flex space-x-6 justify-end">
             <div class="justify-center mb-4 md:w-1/2">
-                <x-cancel-button class="bg-whiteColor py-2 px-4 rounded" onclick="window.history.back()">
-                        {{ __('Batal') }}
+                <x-cancel-button class="bg-baseColor py-2 px-4 rounded" href="{{ route('wakilkurikulum.guru.index') }}">
+                    {{ __('Batal') }}
                 </x-cancel-button>
             </div>
             <div class="justify-center mb-4 md:w-1/2">
