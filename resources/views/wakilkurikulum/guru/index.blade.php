@@ -63,8 +63,12 @@
 </div>
 @include('components.confirm-alert')
 
-@if (session('status') === 'guru-updated')
+@if (session('status') === 'guru-created')
+    <x-success-alert message="Berhasil menambahkan data guru" icon="success" />
+@elseif (session('status') === 'guru-updated')
     <x-success-alert message="Berhasil mengubah data ini" icon="success" />
+@elseif (session('status') === 'guru-deleted')
+    <x-success-alert message="Berhasil menghapus data ini" icon="success" />
 @elseif (session('status') === 'error')
     <x-error-alert title="Gagal!" message="Terjadi kesalahan saat menyimpan data." icon="error" />
 @endif
