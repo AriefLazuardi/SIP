@@ -29,6 +29,7 @@ if (!function_exists('setActiveClass')) {
             'kelas' => ['wakilkurikulum.kelas.index', 'wakilkurikulum.kelas.edit', 'wakilkurikulum.kelas.create'],
             'ruangan' => ['wakilkurikulum.ruangan.index', 'wakilkurikulum.ruangan.edit', 'wakilkurikulum.ruangan.create'],
             'hari' => ['wakilkurikulum.hari.index', 'wakilkurikulum.hari.edit', 'wakilkurikulum.hari.create'],
+            'slotwaktu' => ['wakilkurikulum.slotwaktu.index', 'wakilkurikulum.slotwaktu.edit', 'wakilkurikulum.slotwaktu.create'],
             'tahunajaran' => ['wakilkurikulum.tahunajaran.index', 'wakilkurikulum.tahunajaran.edit', 'wakilkurikulum.tahunajaran.create'],
             
         ];
