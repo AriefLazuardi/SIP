@@ -20,5 +20,10 @@ class Kelas extends Model
     {
         return $this->belongsTo(TingkatanKelas::class, 'tingkatan_kelas_id');
     }
+
+    public function tugasMengajar()
+    {
+        return $this->belongsToMany(TugasMengajar::class, 'kelas_tugas_mengajar', 'kelas_id', 'tugas_mengajar_id');
+    }
     
 }
