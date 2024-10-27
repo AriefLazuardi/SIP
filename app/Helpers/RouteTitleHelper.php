@@ -5,7 +5,7 @@ namespace App\Helpers;
 class RouteTitleHelper {
     public static function getTitle($route) {
         $titles = [
-            'profile.edit' => 'Profile',
+            'profile.edit' => 'Akun',
             'home' => 'Beranda',
             'admin.user.create' => 'Tambah Akun',
             'admin.user.edit' => 'Edit Data Akun',
@@ -17,7 +17,8 @@ class RouteTitleHelper {
             'wakilkurikulum.kelas.edit' => 'Edit Data Kelas',
             'wakilkurikulum.mapel.index' => 'Tabel Data Mata Pelajaran',
             'wakilkurikulum.mapel.create' => 'Tambah Data Mata Pelajaran',
-            'wakilkurikulum.mapel.edit' => 'Edit Data Mapel',
+            'wakilkurikulum.mapel.edit' => 'Edit Data Mata Pelajaran',
+            'wakilkurikulum.mapel.detail' => 'Detail Mata Pelajaran',
             'wakilkurikulum.ruangan.index' => 'Tabel Ruangan',
             'wakilkurikulum.ruangan.create' => 'Tambah Data Ruangan',
             'wakilkurikulum.ruangan.edit' => 'Edit Data Ruangan',
