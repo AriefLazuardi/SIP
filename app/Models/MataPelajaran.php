@@ -22,12 +22,12 @@ class MataPelajaran extends Model
 
     public function detailMataPelajaran()
     {
-        return $this->hasOne(DetailMataPelajaran::class, 'mata_pelajaran_id');
+        return $this->hasMany(DetailMataPelajaran::class, 'mata_pelajaran_id');
     }
     
     public function tingkatanKelas()
     {
-        return $this->belongsToMany(TingkatanKelas::class, 'mata_pelajaran_tingkatan_kelas', 'mata_pelajaran_id', 'tingkatan_kelas_id');
+        return $this->belongsToMany(TingkatanKelas::class, 'detail_mata_pelajaran', 'mata_pelajaran_id', 'tingkatan_kelas_id');
     }
 
     public function hasDetail()
