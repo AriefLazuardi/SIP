@@ -24,5 +24,14 @@ class TingkatanKelas extends Model
     {
         return $this->hasMany(SlotWaktu::class, 'tingkatan_kelas_id');
     }
-
+    
+    public function mataPelajaran()
+    {
+        return $this->belongsToMany(MataPelajaran::class, 'detail_mata_pelajaran', 'tingkatan_kelas_id', 'mata_pelajaran_id');
+    }
+    
+    public function detailMataPelajaran()
+    {
+    return $this->hasMany(DetailMataPelajaran::class, 'tingkatan_kelas_id');
+    }
 }
