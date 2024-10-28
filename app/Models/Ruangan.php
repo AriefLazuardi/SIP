@@ -15,4 +15,9 @@ class Ruangan extends Model
         'kapasitas', 
     ];
 
+    public function jadwal()
+    {
+        return $this->hasMany(Jadwal::class);
+    }
+
 }
