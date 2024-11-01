@@ -6,7 +6,7 @@
             items-center 
             py-3
             w-full
-            px-60
+            px-56
             bg-primaryColor
             border-2 border-transparent
             rounded-md 
