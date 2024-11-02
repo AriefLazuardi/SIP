@@ -12,8 +12,7 @@ class Kelas extends Model
     protected $table = 'kelas';
     protected $fillable = [
         'tingkatan_kelas_id',          
-        'nama_kelas',
-        'total_slot_perminggu', 
+        'nama_kelas', 
     ];
 
     public function tingkatanKelas()
