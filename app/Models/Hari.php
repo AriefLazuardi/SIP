@@ -14,8 +14,8 @@ class Hari extends Model
         'nama_hari',       
     ];
 
-    public function slotWaktu()
+    public function slotWaktuMapping()
     {
-        return $this->hasMany(SlotWaktu::class, 'hari_id');
+        return $this->hasMany(SlotWaktuMapping::class, 'hari_id');
     }
 }
