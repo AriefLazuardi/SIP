@@ -11,6 +11,7 @@ class TingkatanKelas extends Model
 
     public $timestamps = false;
     protected $table = 'tingkatan_kelas';
+    protected $primaryKey = 'id';
     protected $fillable = [
         'nama_tingkatan',           
     ];
@@ -22,7 +23,7 @@ class TingkatanKelas extends Model
 
     public function slotWaktu()
     {
-        return $this->hasMany(SlotWaktu::class, 'tingkatan_kelas_id');
+        return $this->belongsToMany(SlotWaktu::class, 'slot_waktu_tingkatan_kelas', 'tingkatan_kelas_id', 'slot_waktu_id');
     }
     
     public function mataPelajaran()
