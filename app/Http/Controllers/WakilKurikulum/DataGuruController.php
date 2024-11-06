@@ -23,8 +23,9 @@ class DataGuruController extends Controller
     public function showGuru(Request $request)
     {
         $search = $request->input('search');
+        $perPage = 10;
         
-        $gurus = Guru::with('User') 
+        $gurus = Guru::with('User')
         ->when($search, function ($query, $search) {
             return $query->where('name', 'like', '%' . $search . '%')
                 ->orWhere('nip', 'like', '%' . $search . '%')
@@ -32,8 +33,8 @@ class DataGuruController extends Controller
                     $query->where('username', 'like', '%' . $search . '%');
                 });
         })
-        ->get();
-    
+        ->paginate($perPage);
+
         $guruCount = Guru::count();
 
         return view('wakilkurikulum.guru.index', compact('gurus', 'guruCount'));
