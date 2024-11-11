@@ -24,5 +24,10 @@ class Kelas extends Model
     {
         return $this->belongsToMany(TugasMengajar::class, 'kelas_tugas_mengajar', 'kelas_id', 'tugas_mengajar_id');
     }
+
+    public function slotWaktuTingkatanKelas()
+    {
+        return $this->hasMany(SlotWaktuTingkatanKelas::class, 'tingkatan_kelas_id', 'tingkatan_kelas_id');
+    }
     
 }
