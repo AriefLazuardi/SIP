@@ -17,11 +17,12 @@ class KelasTugasMengajar extends Model
 
     public function tugasMengajar()
     {
-        return $this->hasMany(TugasMengajar::class, 'id', 'tugas_mengajar_id');
+        return $this->belongsTo(TugasMengajar::class, 'tugas_mengajar_id');
     }
 
     public function kelas()
     {
         return $this->belongsTo(Kelas::class, 'kelas_id');
     }
+    
 }
