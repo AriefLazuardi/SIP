@@ -11,7 +11,7 @@ class SesiBelajar extends Model
     public $timestamps = false;
     protected $table = 'sesi_belajar';
     protected $fillable = [
-        'name',   
+        'nama',   
     ];
 
     public function slotWaktuTingkatanKelas()
