@@ -19,6 +19,11 @@ class SlotWaktuMapping extends Model
     {
         return $this->belongsTo(SlotWaktuTingkatanKelas::class, 'slot_waktu_tingkatan_kelas_id');
     }
+    
+    public function sesiBelajar()
+    {
+        return $this->belongsTo(SesiBelajar::class, 'slot_waktu_tingkatan_kelas_id');
+    }
 
     public function hari()
     {
