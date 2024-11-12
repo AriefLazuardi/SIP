@@ -11,7 +11,7 @@ class MataPelajaran extends Model
     public $timestamps = false;
     protected $table = 'mata_pelajaran';
     protected $fillable = [
-        'name',
+        'nama',
         'warna_id'                
     ];
 
