@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('mata_pelajaran', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('warna_id');
-            $table->string('name');
+            $table->string('nama');
 
             $table->foreign('warna_id')->references('id')->on('warna')->onUpdate('cascade')->onDelete('cascade');;
         });
