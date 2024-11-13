@@ -127,6 +127,13 @@ return [
             'path' => storage_path('logs/laravel.log'),
         ],
 
+        'penjadwalan' => [
+        'driver' => 'daily',
+        'path' => storage_path('logs/penjadwalan.log'),
+        'level' => 'debug',
+        'days' => 14,
+        ],
+
     ],
 
 ];
