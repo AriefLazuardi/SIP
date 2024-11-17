@@ -1,4 +1,4 @@
-<button 
+<a 
     {{ $attributes->merge([
         'type' => 'submit', 
         'class' => '
@@ -6,8 +6,8 @@
             items-center 
             py-3
             w-full
-            px-60
-            bg-whiteColor
+            px-56
+            bg-baseColor
             border-dangerColor
             border-2
             rounded-md 
@@ -16,10 +16,6 @@
             tracking-wide 
             shadow-lg 
             hover:shadow-xl 
-            focus:outline-none 
-            focus:ring-4 
-            focus:ring-green-400 
-            focus:ring-opacity-50 
             transition 
             ease-in-out 
             duration-200
@@ -28,4 +24,4 @@
             cancel
         </span>
     {{ $slot }}
-</button>
+    </a>
