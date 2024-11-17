@@ -25,12 +25,14 @@ if (!function_exists('setActiveClass')) {
         // Definisikan routes yang terkait dengan setiap menu
         $routeMap = [
             'guru' => ['wakilkurikulum.guru.index', 'wakilkurikulum.guru.edit', 'wakilkurikulum.guru.create'],
-            'mapel' => ['wakilkurikulum.mapel.index', 'wakilkurikulum.mapel.edit', 'wakilkurikulum.mapel.create'],
+            'mapel' => ['wakilkurikulum.mapel.index', 'wakilkurikulum.mapel.edit', 'wakilkurikulum.mapel.create', 'wakilkurikulum.mapel.detail'],
             'kelas' => ['wakilkurikulum.kelas.index', 'wakilkurikulum.kelas.edit', 'wakilkurikulum.kelas.create'],
             'ruangan' => ['wakilkurikulum.ruangan.index', 'wakilkurikulum.ruangan.edit', 'wakilkurikulum.ruangan.create'],
             'hari' => ['wakilkurikulum.hari.index', 'wakilkurikulum.hari.edit', 'wakilkurikulum.hari.create'],
+            'walikelas' => ['wakilkurikulum.walikelas.index', 'wakilkurikulum.walikelas.edit', 'wakilkurikulum.walikelas.create'],
             'slotwaktu' => ['wakilkurikulum.slotwaktu.index', 'wakilkurikulum.slotwaktu.edit', 'wakilkurikulum.slotwaktu.create'],
             'tahunajaran' => ['wakilkurikulum.tahunajaran.index', 'wakilkurikulum.tahunajaran.edit', 'wakilkurikulum.tahunajaran.create'],
+            'tugasmengajar' => ['wakilkurikulum.tugasmengajar.index', 'wakilkurikulum.tugasmengajar.edit', 'wakilkurikulum.tugasmengajar.create'],
             
         ];
 
