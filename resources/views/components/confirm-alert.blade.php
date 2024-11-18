@@ -1,11 +1,11 @@
 <div>
     <script>
-        function confirmDelete(route, text) {
+        function confirmAction(action, message) {
             Swal.fire({
-                text: 'Anda yakin ingin menghapus data ini?',
+                text: message,
                 icon: 'warning',
                 showDenyButton: true,
-                confirmButtonText: 'Hapus',
+                confirmButtonText: 'Ya',
                 denyButtonText: 'Batal',
                 customClass: {
                     denyButton: 'bg-primaryColor text-white px-24 py-2 rounded-md ml-2',
@@ -15,8 +15,7 @@
                 buttonsStyling: false,
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Submit form with the given route
-                    document.getElementById(route).submit();
+                    action();
                 }
             });
         }
