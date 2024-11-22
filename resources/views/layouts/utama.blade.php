@@ -9,9 +9,10 @@
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
-        <script src="https://unpkg.com/heroicons/dist/outline.min.js"></script>
+        <link rel="icon" href="{{ Vite::asset('resources/images/logo-kementrianagama.png') }}" type="image/x-icon">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap" rel="stylesheet">
+       
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -23,11 +24,11 @@
 
         <!-- Page Content -->
         <div class="flex-1">
-            <header :class="{'ml-10': sidebarOpen, 'ml-18': !sidebarOpen'}">
+            <header :class="{'ml-10': sidebarOpen, 'ml-18': !sidebarOpen}">
                 @include('layouts.navbars.navigation')
             </header>
 
-            <main :class="{'ml-72': sidebarOpen, 'ml-24': !sidebarOpen}" class="transition-all duration-300 m-10">
+            <main :class="{'ml-72': sidebarOpen, 'ml-24': !sidebarOpen}" class="transition-all duration-300 m-10 mt-28  ">
                 @yield('content')
             </main>
         </div>
