@@ -29,4 +29,16 @@ class SlotWaktuMapping extends Model
     {
         return $this->belongsTo(Hari::class, 'hari_id');
     }
+
+    public function slotWaktu()
+    {
+        return $this->hasOneThrough(
+            SlotWaktu::class,
+            SlotWaktuTingkatanKelas::class,
+            'id', // Foreign key di SlotWaktuTingkatanKelas
+            'id', // Foreign key di SlotWaktu
+            'slot_waktu_tingkatan_kelas_id', // Foreign key di SlotWaktuMapping
+            'slot_waktu_id' // Foreign key di SlotWaktuTingkatanKelas
+        );
+    }
 }
