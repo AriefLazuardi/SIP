@@ -26,6 +26,16 @@
                     <x-dropdown-custom name="user_id" :options="$users" selected="{{ old('user_id') }}" placeholder="Pilih User" class="w-full" />
                     <x-input-error :messages="$errors->get('user_id')" class="mt-2" />
                 </div>
+                <div class="mt-4">
+                    <x-input-label for="tempat_lahir" :value="__('Tempat Lahir')" />
+                     <x-text-input id="tempat_lahir" name="tempat_lahir" type="text" placeholder="Ketikkan disini" class="mt-1 block w-full" />
+                     <x-input-error :messages="$errors->get('tempat_lahir')" class="mt-2" />
+                </div>
+                <div class="mt-4">
+                    <x-input-label for="jabatan" :value="__('Jabatan')" />
+                     <x-text-input id="jabatan" name="jabatan" type="text" placeholder="Ketikkan disini" class="mt-1 block w-full" />
+                     <x-input-error :messages="$errors->get('jabatan')" class="mt-2" />
+                </div>
             </div>
 
             <div class="w-full md:w-1/2">
@@ -33,6 +43,16 @@
                     <x-input-label for="nip" :value="__('Nomor Identitas Pegawai')" />
                      <x-text-input id="nip" name="nip" type="text" placeholder="Ketikkan disini" class="mt-1 block w-full" />
                      <x-input-error :messages="$errors->get('nip')" class="mt-2" />
+                </div>
+                <div class="mt-24">
+                    <x-input-label for="tanggal_lahir" :value="__('Tanggal Lahir')" />
+                    <x-date-input id="tanggal_lahir" name="tanggal_lahir" type="text" placeholder="Pilih Tanggal" class="mt-1 block w-full" required autofocus />
+                    <x-input-error :messages="$errors->get('tanggal_lahir')" class="mt-2" />
+                </div>
+                <div class="mt-4">
+                    <x-input-label for="golongan" :value="__('Golongan')" />
+                     <x-text-input id="golongan" name="golongan" type="text" placeholder="Ketikkan disini" class="mt-1 block w-full" />
+                     <x-input-error :messages="$errors->get('golongan')" class="mt-2" />
                 </div>
             </div>
         </div>
@@ -53,7 +73,14 @@
         </div>
     </form>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    flatpickr("#tanggal_lahir", {
+        dateFormat: "Y-m-d",
+    });
+});
 
+</script>
 @if (session('status') === 'guru-created')
     <x-success-alert message="Berhasil menambahkan guru" icon="success" />
 @elseif (session('status') === 'error')
