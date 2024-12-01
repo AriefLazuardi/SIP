@@ -19,7 +19,9 @@
                 </form>
             </div>
             <div class="w-12 h-12 items-center flex justify-center rounded-md border-primaryColor border-2">
-                <i class="material-icons items-center text-primaryColor">print</i>
+                <a href="{{ route('admin.cetak.jadwal') }}" class="w-12 h-12 items-center flex justify-center rounded-md">
+                    <i class="material-icons items-center text-primaryColor">print</i>
+                </a>
             </div>
         </div>
     </div>
