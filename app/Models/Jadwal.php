@@ -12,7 +12,6 @@ class Jadwal extends Model
     protected $fillable = [
         'kelas_tugas_mengajar_id',
         'slot_waktu_mapping_id',
-        'ruangan_id',
         'tahun_ajaran_id'
     ];
 
