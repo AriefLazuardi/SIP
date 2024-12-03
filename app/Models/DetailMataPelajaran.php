@@ -13,7 +13,8 @@ class DetailMataPelajaran extends Model
     protected $fillable = [
         'mata_pelajaran_id',              
         'tingkatan_kelas_id',               
-        'tahun_ajaran_id', 
+        'tahun_ajaran_id',
+        'kurikulum_id', 
         'total_jam_perminggu',     
     ];
 
@@ -30,5 +31,9 @@ class DetailMataPelajaran extends Model
     public function tahunAjaran()
     {
         return $this->belongsTo(TahunAjaran::class, 'tahun_ajaran_id');
+    }
+    public function kurikulum()
+    {
+        return $this->belongsTo(Kurikulum::class, 'kurikulum_id');
     }
 }
