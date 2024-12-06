@@ -25,13 +25,13 @@ class Jadwal extends Model
         return $this->belongsTo(SlotWaktuMapping::class, 'slot_waktu_mapping_id');
     }
 
-    public function ruangan()
-    {
-        return $this->belongsTo(Ruangan::class, 'ruangan_id');
-    }
-
     public function tahunAjaran()
     {
         return $this->belongsTo(TahunAjaran::class, 'tahun_ajaran_id');
     }
+    
+        // public function ruangan()
+    // {
+    //     return $this->belongsTo(Ruangan::class, 'ruangan_id');
+    // }
 }
