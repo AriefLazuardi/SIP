@@ -38,6 +38,7 @@
                     id: Date.now(),
                     total_jam_perminggu: '',
                     tingkatanKelas: [],
+                    kurikulum_id: '',
                     tingkatan_kelas_ids: []
                 });
             },
@@ -106,8 +107,22 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="mt-4">
+                                <label x-bind:for="'kurikulum_id_' + subject.id" class="block font-medium text-sm text-gray-700 mb-2">Kurikulum</label>
+                                <x-dropdown-custom 
+                                x-bind:id="'kurikulum_' + subject.id" 
+                                x-bind:name="'kurikulum_id[' + index + ']'"
+                                :options="$kurikulum" 
+                                x-model="group.kurikulum_id"
+                                placeholder="Pilih Kurikulum" 
+                                class="mt-1 block w-full" 
+                                />
+                                @error('kurikulum_id')
+                                    <p class="mt-2 text-sm text-dangerColor">{{ $message }}</p>
+                                @enderror
+                            </div>
                         </div>
-
+                       
                         <div class="w-full md:w-1/2">
                             <x-input-label x-bind:for="'total_jam_perminggu_' + index" :value="__('Jam per Minggu')" />
                             <x-text-input 
