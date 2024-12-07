@@ -20,36 +20,28 @@
         </div>
 
         @if($mapel->detailMataPelajaran->count() > 0)
-            <!-- Tingkatan Kelas berdasarkan Jam per Minggu -->
             <div class="space-y-2">
-                @foreach($tingkatanKelasByJam as $jam => $tingkatanKelas)
-                <div class="flex">
-                    <div class="md:w-1/2">
-                        <p class="text-sm mb-2">Tingkatan Kelas</p>
-                        <span >{{ implode(', ', $tingkatanKelas) }}</span>
+                @foreach($detailMapelGrouped as $detail)
+                    <div class="flex">
+                        <div class="md:w-1/2">
+                            <p class="text-sm mb-2">Tingkatan Kelas</p>
+                            <span class="font-medium">{{ $detail['tingkatanKelas'] }}</span>
+                        </div>
+                        <div class="md:w-1/2">
+                            <p class="text-sm mb-2">Jam per Minggu</p>
+                            <span class="font-medium">{{ $detail['jamPerMinggu'] }}</span>
+                        </div>
+                        <div class="md:w-1/2">
+                            <p class="text-sm mb-2">Kurikulum</p>
+                            <span class="font-medium">{{ $detail['kurikulum'] }}</span>
+                        </div>
+                        <div class="md:w-1/2">
+                            <p class="text-sm mb-2">Tahun Ajaran</p>
+                            <span class="font-medium">{{ $detail['tahunAjaran'] }}</span>
+                        </div>
                     </div>
-                    <div class="md:w-1/2">
-                        <p class="text-sm mb-2">Jam per Minggu</p>
-                        <span class="">{{ $jam }}</span>
-                    </div>
-                </div>
                     <div class="border-b-2"></div>
                 @endforeach
-            </div>
-
-            <!-- Tahun Ajaran -->
-            <div class="space-y-2">
-                <p class="text-sm text-gray-600">Tahun Ajaran</p>
-                <p class="font-medium">{{ $formatTahunAjaran }}</p>
-                <div class="border-b-2"></div>
-            </div>
-
-            <!-- Warna Identitas -->
-            <div class="space-y-2">
-                <p class="text-sm text-gray-600">Warna Identitas</p>
-                <div class="border border-customColor p-2 w-72">
-                    <div class="w-70 h-8 rounded" style="background-color: {{ $mapel->warna->kode_hex }}"></div>
-                </div>
             </div>
         @else
             <div class="alert alert-info">
