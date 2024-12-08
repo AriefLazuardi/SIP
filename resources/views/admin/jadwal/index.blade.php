@@ -4,9 +4,12 @@
 <div class="container mx-auto p-4 bg-white mt-8">
     <!-- Form pencarian -->
     <div class="flex justify-between items-center mb-4">
+        @if ($jadwalData->isEmpty())
+            <h2 class="text-xl font-bold">Penjadwalan</h2>
+        @else
         <h2 class="text-xl font-bold">Jadwal Mata Pelajaran Sekarang</h2>
         <div class="flex items-center gap-2">
-            <div x-data="{ search: '{{ request('search') }}' }" class="flex items-center border border-customColor rounded-xl p-1">
+            <div x-data="{search: '{{ session('search', request('search')) }}'}" class="flex items-center border border-customColor rounded-xl p-1">
                 <span class="material-icons text-primaryColor ml-2">search</span>
                 <form action="{{ route('admin.jadwal.index') }}" method="GET">
                     <input 
@@ -14,30 +17,38 @@
                         name="search" 
                         placeholder="Cari" 
                         class="flex-grow border-0 focus:ring-0" 
-                        x-model="search"
-                    >
+                        x-model="search">
                 </form>
             </div>
             <div class="w-12 h-12 items-center flex justify-center rounded-md border-primaryColor border-2">
-                <a href="{{ route('admin.cetak.jadwal') }}" class="w-12 h-12 items-center flex justify-center rounded-md">
-                    <i class="material-icons items-center text-primaryColor">print</i>
-                </a>
+                <form action="{{ route('admin.cetak.jadwal') }}" method="GET" class="inline">
+                    <input type="hidden" name="tahun_ajaran_id" value="{{ request('tahun_ajaran_id') ?? old('tahun_ajaran_id') }}">
+                    <button type="submit" class="w-12 h-12 items-center flex justify-center rounded-md border-primaryColor border-2">
+                        <i class="material-icons items-center text-primaryColor">print</i>
+                    </button>
+                </form>
             </div>
         </div>
+        @endif
     </div>
 
-  
+    <form action="{{ route('admin.jadwal.index') }}" method="GET" class="mb-4">
+        <x-dropdown-custom
+            name="tahun_ajaran_id"
+            :options="$tahunAjaran"
+            :selected="$selectedTahunAjaran"
+            placeholder="Pilih Tahun Ajaran"
+            onchange="this.form.submit()"
+            class="w-80 mb-4 -mt-4"/>
+    </form>
+    @if ($jadwalData->isEmpty())
+        <div class="mt-4 w-full h-96 flex items-center justify-center">
+            <h1>Saat ini masih belum ada jadwal</h1>
+        </div>
+    @else
     <form action="{{ route('admin.jadwal.index') }}" method="GET" class="mb-4">
     <input type="hidden" name="hari_id" value="{{ $selectedHari }}">
     
-    <x-dropdown-custom
-        name="tahun_ajaran_id"
-        :options="$tahunAjaran"
-        :selected="$selectedTahunAjaran"
-        placeholder="Pilih Tahun Ajaran"
-        onchange="this.form.submit()"
-        class="w-80 mb-4 -mt-4"/>
-
     <!-- Pilih Tingkatan Kelas -->
     <div class="flex space-x-2 mb-2">
         @foreach (range(1, 6) as $tingkat)
@@ -49,9 +60,8 @@
             </button>
         @endforeach
     </div>
-    
-    <!-- Form terpisah untuk pilihan hari -->
     </form>
+
     <form action="{{ route('admin.jadwal.index') }}" method="GET" class="mb-4">
         <input type="hidden" name="tingkatan_kelas_id" value="{{ $selectedTingkatanKelas }}">
         
@@ -131,6 +141,7 @@
             </table>
         </div>
     </div>
+    @endif
 </div>
 @include('components.confirm-alert')
 
