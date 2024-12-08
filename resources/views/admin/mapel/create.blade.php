@@ -39,7 +39,8 @@
                         id: 1, 
                         tingkatan_kelas_id: '', 
                         total_jam_perminggu: '',
-                        tingkatanKelas: [], // Tambahkan ini
+                        kurikulum_id: '',
+                        tingkatanKelas: [],
                         tingkatan_kelas_ids: []
                     }],
                     addSubject() {
@@ -47,7 +48,8 @@
                             id: this.subjects.length + 1,
                             tingkatan_kelas_id: '',
                             total_jam_perminggu: '',
-                            tingkatanKelas: [], // Tambahkan ini
+                            kurikulum_id: '',
+                            tingkatanKelas: [],
                             tingkatan_kelas_ids: []
                         });
                     },
@@ -61,7 +63,7 @@
                     <div class="flex space-x-6 justify-start">
                         <div class="w-full md:w-1/2">
                         <div>
-                                <label :for="'tingkatanKelas_' + subject.id" class="block font-medium text-sm text-gray-700 mb-2" x-text="'Tingkatan Kelas ' + subject.id"></label>
+                                <label :for="'tingkatanKelas_' + subject.id" class="block font-medium text-sm text-gray-700 mb-2" x-text="'Tingkatan Kelas'"></label>
                                 <div x-data="{ 
                                         open: false
                                     }" 
@@ -109,6 +111,20 @@
                                     </div>
                                 </div>
                                 @error('tingkatanKelas_id.*')
+                                    <p class="mt-2 text-sm text-dangerColor">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <div class="mt-4">
+                                <label x-bind:for="'kurikulum_id_' + subject.id" class="block font-medium text-sm text-gray-700 mb-2">Kurikulum</label>
+                                <x-dropdown-custom 
+                                x-bind:id="'kurikulum_' + subject.id" 
+                                x-bind:name="'kurikulum_id[' + index + ']'"
+                                :options="$kurikulum" selected="{{ old('kurikulum_id') }}"
+                                placeholder="Pilih Kurikulum" 
+                                class="mt-1 block w-full" 
+                                />
+                                @error('kurikulum_id')
                                     <p class="mt-2 text-sm text-dangerColor">{{ $message }}</p>
                                 @enderror
                             </div>
