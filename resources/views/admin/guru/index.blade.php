@@ -46,6 +46,9 @@
                 </td>
                 <td class="py-2 px-4">
                     <div class="flex justify-center space-x-2">
+                        <x-detail-button :url="route('admin.guru.detail',['id'=>$guru->id])">
+                            Detail
+                        </x-detail-button>
                         <x-edit-button :url="route('admin.guru.edit', ['id' => $guru->id])">
                             Edit
                         </x-edit-button>
