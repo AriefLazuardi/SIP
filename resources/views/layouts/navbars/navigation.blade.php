@@ -1,25 +1,29 @@
-<nav class="bg-primaryColor text-white p-6" >
+
+@php
+    use App\Helpers\RouteTitleHelper;
+
+    $currentRouteName = Route::currentRouteName();
+    $title = RouteTitleHelper::getTitle($currentRouteName);
+@endphp
+
+<nav class="bg-primaryColor text-white p-6 fixed top-0 right-0 transition-all duration-300 z-50 h-20"
+     :class="{'left-64': sidebarOpen, 'left-16': !sidebarOpen}"
+     x-data="{ sidebarOpen: true }" 
+     @sidebar-toggle.window="sidebarOpen = $event.detail">
     <div class="max-w-7xl mx-auto">
         <div class="flex justify-between items-center">
-            <!-- Judul Beranda -->
-            <h1 class="text-3xl font-bold ml-40" :class="{'-translate-x-48': !sidebarOpen}" x-data="{ sidebarOpen: open }" @sidebar-toggle.window="sidebarOpen = $event.detail">
-                @switch(Route::currentRouteName())
-                    @case('profile.edit')
-                        Profile
-                        @break
-                    @case('home')
-                        Beranda
-                        @break
-                    @case('other.route.name')
-                        Other Page Title
-                        @break
-                    @default
-                        Beranda
-                @endswitch
+
+        <div class="flex items-center" x-data="{ sidebarOpen: true }" @sidebar-toggle.window="sidebarOpen = $event.detail">
+            <div class="w-8 h-8 mr-4"></div>
+                <!-- Judul Beranda -->
+                <h1 class="text-3xl font-bold transition-transform duration-300" :class="{'-translate-x-10': sidebarOpen, '-translate-x-28': !sidebarOpen}" x-data="{ sidebarOpen: true }" @sidebar-toggle.window="sidebarOpen = $event.detail">
+               {{ $title }}
             </h1>
+        </div>
+
             
             <!-- Menu user dan pengaturan -->
-            <div class="flex items-center space-x-4 translate-x-24">
+            <div class="flex items-center space-x-4 fixed top-6 right-10">
                 <span class="hidden md:inline">{{ Auth::user()->name }}</span>
                 <div x-data="{ open: false }" class="relative">
                     <button @click="open = !open" class="flex items-center focus:outline-none">
@@ -28,12 +32,25 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                         </svg>
                     </button>
-                    <div x-show="open" @click.away="open = false" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 text-gray-700">
-                        <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm hover:bg-gray-100">Profile</a>
-                        <form method="POST" action="{{ route('logout') }}">
+                    <div x-show="open" @click.away="open = false" class="absolute right-2 mt-2 w-32 bg-white rounded-md shadow-lg py-1 text-customColor font-semibold">
+                        <a href="{{ route('profile.edit') }}" class="block mr-2 py-2 text-sm hover:bg-gray-100">
+                            <div class="flex justify-center space-x-4">
+                                <span class="material-icons y-10">person</span>
+                                <span class="translate-y-1">Akun</span>
+                            </div>
+                        </a>
+                        <!-- x-data -->
+                        <!-- @submit.prevent="confirmLogout" -->
+                        <form 
+                            method="POST" 
+                            action="{{ route('logout') }}"
+                        >
                             @csrf
-                            <button type="submit" class="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100">
-                                Log Out
+                            <button type="submit" class="block w-full py-2 text-sm hover:bg-gray-100">
+                                <div class="flex justify-center space-x-3 mr-2">
+                                    <span class="material-icons ml-2">logout</span>
+                                    <span class="translate-y-0.5 translate-x-0.5">Keluar</span>
+                                </div>
                             </button>
                         </form>
                     </div>
@@ -42,3 +59,28 @@
         </div>
     </div>
 </nav>
+
+<!-- <script>
+    function confirmLogout(event) {
+        event.preventDefault();
+        
+        Swal.fire({
+            text: 'Apakah Anda yakin ingin keluar dari aplikasi?',
+            icon: 'warning',
+            showDenyButton: true,
+            confirmButtonText: 'Ya',
+            denyButtonText: 'Batal',
+            customClass: {
+                denyButton: 'bg-primaryColor text-white px-24 py-2 rounded-md ml-2',
+                confirmButton: 'bg-white border-2 border-dangerColor text-dangerColor px-24 py-2 rounded-md mr-2',
+                popup: 'flex flex-col items-center'
+            },
+            buttonsStyling: false,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Submit form secara manual setelah konfirmasi
+                event.target.submit();
+            }
+        });
+    }
+</script> -->
