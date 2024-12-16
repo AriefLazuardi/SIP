@@ -22,7 +22,7 @@
         
         <nav>
             <!-- Beranda Menu -->
-            <a href="{{ route(getDashboardRoute()) }}" class="pt-2 block px-5 py-2 rounded-md {{ Route::currentRouteName() === getDashboardRoute() || Route::currentRouteName() === 'admin.user.edit' ? 'bg-primaryColor text-white' : 'bg-baseColor text-customColor' }}" :class="{'pt-10': !sidebarOpen}">
+            <a href="{{ route(getDashboardRoute()) }}" class="pt-2 block px-5 py-2 rounded-md {{ setActiveClass('beranda') }}" :class="{'pt-10': !sidebarOpen}">
                 <div :class="{'flex items-center justify-center space-x-5': !sidebarOpen, 'flex items-center space-x-5': sidebarOpen}">
                     <span class="material-icons text-2xl">dashboard</span>
                     <span x-show="sidebarOpen">Beranda</span>
@@ -41,18 +41,6 @@
                 </button>
                 <!-- Submenu (collapsed/expanded) -->
                 <div x-show="open" class="w-full" :class="sidebarOpen ? 'pl-5' : 'pl-0'">
-                    <a href="{{route('wakilkurikulum.tahunajaran.index')}}" class="block px-5 py-2 rounded-md {{setActiveClass('tahunajaran')}}">
-                        <div class="flex items-center space-x-4">
-                            <span class="material-icons text-2xl">timeline</span>
-                            <span x-show="sidebarOpen">Data Tahun Ajaran</span>
-                        </div>
-                    </a>
-                    <a href="{{route('wakilkurikulum.slotwaktu.index')}}" class="block px-5 py-2 rounded-md {{ setActiveClass('slotwaktu') }}">
-                        <div class="flex items-center space-x-4">
-                            <span class="material-icons text-2xl">schedule</span>
-                            <span x-show="sidebarOpen">Data Slot Waktu</span>
-                        </div>
-                    </a>
                     <a href="{{route('wakilkurikulum.tugasmengajar.index')}}" class="block px-5 py-2 rounded-md {{setActiveClass('tugasmengajar')}}">
                         <div class="flex items-center space-x-4">
                             <span class="material-icons text-2xl">view_timeline</span>
@@ -63,7 +51,7 @@
             </div>
             @endrole
             @role('administrator')
-            <a href="{{route('admin.user.index')}}" class="block py-2 pl-5 px-0.5 rounded-md {{ Route::is('admin.user.create') ? 'bg-primaryColor text-white' : 'bg-baseColor text-customColor' }}">
+            <a href="{{route('admin.user.index')}}" class="block py-2 pl-5 px-0.5 rounded-md {{ setActiveClass('kelola_akun') }}">
                 <div class="flex items-center space-x-5">
                 <span class="material-icons text-2xl" :class="{'-translate-x-0': !sidebarOpen, 'pt-2': !sidebarOpen}">person_add_alt_1</span>
                 <span x-show="sidebarOpen">Kelola Akun</span>
@@ -87,6 +75,13 @@
                             <span x-show="sidebarOpen">Data Guru</span>
                             </div>
                     </a>
+                    <a href="{{route('admin.kurikulum.index')}}" 
+                        class="w-full block px-5 py-2 rounded-md {{ setActiveClass('kurikulum') }}">
+                        <div class="flex items-center space-x-4 flex-grow">
+                            <span class="material-icons text-2xl" >map</span>
+                            <span x-show="sidebarOpen">Data Kurikulum</span>
+                            </div>
+                    </a>
                     <a href="{{route('admin.mapel.index')}}" class="block px-5 py-2 rounded-md {{ setActiveClass('mapel')}}">
                         <div class="flex items-center space-x-4">
                             <span class="material-icons text-2xl">menu_book</span>
@@ -105,6 +100,18 @@
                             <span x-show="sidebarOpen">Data Wali Kelas</span>
                         </div>
                     </a>
+                    <a href="{{route('admin.slotwaktu.index')}}" class="block px-5 py-2 rounded-md {{ setActiveClass('slotwaktu') }}">
+                        <div class="flex items-center space-x-4">
+                            <span class="material-icons text-2xl">schedule</span>
+                            <span x-show="sidebarOpen">Data Slot Waktu</span>
+                        </div>
+                    </a>
+                    <a href="{{route('admin.tahunajaran.index')}}" class="block px-5 py-2 rounded-md {{setActiveClass('tahunajaran')}}">
+                        <div class="flex items-center space-x-4">
+                            <span class="material-icons text-2xl">timeline</span>
+                            <span x-show="sidebarOpen">Data Tahun Ajaran</span>
+                        </div>
+                    </a>
                     <!-- <a href="{{route('admin.ruangan.index')}}" class="block px-5 py-2 rounded-md {{ setActiveClass('ruangan') }}">
                         <div class="flex items-center space-x-4">
                             <span class="material-icons text-2xl">meeting_room</span>
@@ -119,14 +126,49 @@
                     </a> -->
                 </div>
             </div>
-            @endrole
-            @role('wakakurikulum|guru')
-            <a href="{{route('wakilkurikulum.penjadwalan.index')}}" class="block py-2 pt-4 pl-5 px-0.5 rounded-md {{ Route::is('penjadwalan') ? 'bg-primaryColor text-white' : 'bg-baseColor text-customColor' }}">
+            <a href="{{route('admin.jadwal.index')}}" class="block py-2 pb-2 pl-5 px-0.5 rounded-md {{ setActiveClass('jadwal') }}" :class="{'mt-5': !sidebarOpen}">
                 <div class="flex items-center space-x-5">
                 <span class="material-icons text-2xl" :class="{'-translate-x-0': !sidebarOpen, 'pt-2': !sidebarOpen}">table_chart</span>
-                <span x-show="sidebarOpen">Penjadwalan</span>
+                <span x-show="sidebarOpen">Jadwal</span>
                 </div>
             </a>
+            @endrole
+            @role('wakakurikulum')
+            <a href="{{route('wakilkurikulum.penjadwalan.index')}}" class="block py-2 pb-2 pl-5 px-0.5 rounded-md {{ setActiveClass('penjadwalan') }}" :class="{'mt-5': !sidebarOpen}">
+                <div class="flex items-center space-x-5">
+                    <span class="material-icons text-2xl" :class="{'-translate-x-0': !sidebarOpen, 'pt-2': !sidebarOpen}">table_chart</span>
+                    <span x-show="sidebarOpen">Penjadwalan</span>
+                </div>
+            </a>
+            @endrole
+            @role('guru')
+            <div x-data="{ open: false }" :class="{'-mb-5': !sidebarOpen}">
+                <button @click="open = !open" class="w-full px-5 pt-4 py-2 text-left flex items-center justify-between" :class="{'-translate-y-4': !sidebarOpen}">
+                    <div class="flex items-center space-x-4 rounded-md">
+                        <span class="material-icons text-2xl" >backup_table</span>
+                        <span x-show="sidebarOpen" class="pl-1">Jadwal</span>
+                        <span x-show="!open" class="material-icons" :class="{'pl-16': sidebarOpen, 'translate-y-3': !sidebarOpen, '-translate-x-12': !sidebarOpen, 'pl-2': !sidebarOpen, 'pt-12': !sidebarOpen}">keyboard_arrow_down</span>
+                        <span x-show="open" class="material-icons" :class="{'pl-16': sidebarOpen, 'translate-y-3': !sidebarOpen, '-translate-x-12': !sidebarOpen, 'pl-2': !sidebarOpen, 'pt-12': !sidebarOpen}">keyboard_arrow_up</span>
+                    </div>
+                </button>
+                <!-- Submenu (collapsed/expanded) -->
+                <div x-show="open" class="w-full" :class="sidebarOpen ? 'pl-5' : 'pl-0'">
+                    <a href="{{route('guru.jadwal.index')}}" 
+                        class="w-full block px-5 py-2 rounded-md {{ setActiveClass('jadwalKeseluruhan') }}">
+                        <div class="flex items-center space-x-4 flex-grow">
+                            <span class="material-icons text-2xl" >grid_on</span>
+                            <span x-show="sidebarOpen">Jadwal Keseluruhan</span>
+                        </div>
+                    </a>
+                    <a href="{{route('guru.jadwal.pribadi')}}" 
+                        class="w-full block px-5 py-2 rounded-md {{ setActiveClass('jadwalPribadi') }}">
+                        <div class="flex items-center space-x-4 flex-grow">
+                            <span class="material-icons text-2xl" >switch_account</span>
+                            <span x-show="sidebarOpen">Jadwal Pribadi</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
             @endrole
         </nav>
     </aside>
