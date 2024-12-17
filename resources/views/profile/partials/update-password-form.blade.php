@@ -40,7 +40,7 @@
             </x-save-button>
 
             @if (session('status') === 'password-updated')
-                <x-popup-success message="Berhasil mengganti password" />
+                <x-success-alert message="Berhasil mengganti password" />
             @endif
         </div>
     </form>
