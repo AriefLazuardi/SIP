@@ -2,7 +2,6 @@
 
 @section('content')
 <div class="container mx-auto p-4 bg-white mt-8">
-    <!-- Form pencarian -->
     <div class="flex justify-between items-center mb-4">
         @if ($jadwalData->isEmpty())
             <h2 class="text-xl font-bold">Penjadwalan</h2>
@@ -32,43 +31,45 @@
         @endif
     </div>
 
-    <form action="{{ route('wakilkurikulum.penjadwalan.index') }}" method="GET" class="mb-4">
-        <div>
-        <x-dropdown-custom
-            name="tahun_ajaran_id"
-            :options="$tahunAjaran"
-            :selected="$selectedTahunAjaran"
-            placeholder="Pilih Tahun Ajaran"
-            onchange="this.form.submit()"
-            class="w-80 mb-4 -mt-4"/>
+    <div x-data="{ tahunAjaranId: '{{ request('tahun_ajaran_id') }}' }">
+        <form action="{{ route('wakilkurikulum.penjadwalan.index') }}" method="GET" class="mb-4">
+            <x-dropdown-custom
+                name="tahun_ajaran_id"
+                :options="$tahunAjaran"
+                :selected="$selectedTahunAjaran"
+                placeholder="Pilih Tahun Ajaran"
+                onchange="this.form.submit(); tahunAjaranId = this.value"
+                class="w-80 mb-4 -mt-4"/>
+            
+        </form>
         @if ($jadwalData->isEmpty())
-            <div class="-mt-20" x-data="{ 
-                confirmGenerate() { 
-                    Swal.fire({
-                        title: 'Tunggu sebentar!',
-                        text: 'Proses penjadwalan sedang berlangsung...',
-                        icon: 'info',
-                        allowOutsideClick: false,
-                        showConfirmButton: false,
-                        didOpen: () => {
-                            Swal.showLoading();
-                            this.$refs.generateJadwalForm.submit();
-                        }
-                    });
-                } 
-            }">
-                <form id="generateJadwalForm" x-ref="generateJadwalForm" action="{{ route('wakilkurikulum.penjadwalan.generate') }}" method="POST"> 
+            <div class="-mt-20">
+                <form id="generateJadwalForm" x-ref="generateJadwalForm" action="{{ route('wakilkurikulum.penjadwalan.generate') }}" method="POST">
                     @csrf
-                    <button type="button" x-on:click="confirmGenerate" class="w-44 bg-primaryColor text-whiteColor p-3 rounded-md flex space-x-4 items-center mb-4 ml-auto mt-5">
+                    <input type="hidden" name="tahun_ajaran_id" x-model="tahunAjaranId">
+                    <button type="button" x-on:click="
+                        confirmAction(() => {
+                            Swal.fire({
+                                title: 'Tunggu sebentar!',
+                                text: 'Proses penjadwalan sedang berlangsung...',
+                                icon: 'info',
+                                allowOutsideClick: false,
+                                showConfirmButton: false,
+                                didOpen: () => {
+                                    Swal.showLoading();
+                                    $refs.generateJadwalForm.submit();
+                                }
+                            });
+                        }, 'Apakah Anda yakin ingin menyusun jadwal? Pastikan data sudah lengkap.');
+                    " class="w-44 bg-primaryColor text-whiteColor p-3 rounded-md flex space-x-4 items-center mb-4 ml-auto mt-5">
                         <span class="material-icons px-2">add_chart</span>
                         Susun Jadwal
                     </button>
                 </form>
             </div>
-            @endif
-        </div>
-       
-    </form>
+        @endif
+    </div>
+
 
     @if ($jadwalData->isEmpty())
         <div class="mt-4 w-full h-96 flex items-center justify-center">
@@ -77,7 +78,6 @@
     @else
     <form action="{{ route('wakilkurikulum.penjadwalan.index') }}" method="GET" class="mb-4">
     <input type="hidden" name="hari_id" value="{{ $selectedHari }}">
-    <!-- Pilih Tingkatan Kelas -->
     <div class="flex space-x-2 mb-2">
         @foreach (range(1, 6) as $tingkat)
             <button type="submit" 
@@ -88,14 +88,11 @@
             </button>
         @endforeach
     </div>
-    
-    <!-- Form terpisah untuk pilihan hari -->
     </form>
+
     <form action="{{ route('wakilkurikulum.penjadwalan.index') }}" method="GET" class="mb-4">
         <input type="hidden" name="tingkatan_kelas_id" value="{{ $selectedTingkatanKelas }}">
-        
         <div class="flex justify-between items-center mb-4">
-            <!-- Pilih Hari -->
             <div class="flex space-x-2">
                 @foreach (['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat'] as $index => $hari)
                     <button type="submit" 
@@ -107,7 +104,7 @@
                 @endforeach
             </div>
             
-            <!-- Sesi di ujung kanan -->
+
             <div class="bg-primaryColor w-28 h-12 border-2 rounded-md flex justify-center items-center">
                 <span class="font-semibold text-whiteColor text-center">
                     Sesi {{ array_values($jadwalMatrix)[0]['sesi_belajar'] }}
@@ -173,21 +170,24 @@
 
     <div x-data="{ 
         confirmGenerate() { 
-            Swal.fire({
-                title: 'Tunggu sebentar!',
-                text: 'Proses penjadwalan sedang berlangsung...',
-                icon: 'info',
-                allowOutsideClick: false,
-                showConfirmButton: false,
-                didOpen: () => {
-                    Swal.showLoading();
-                    this.$refs.generateJadwalForm.submit();
-                }
-            });
+            confirmAction(() => {
+                Swal.fire({
+                    title: 'Tunggu sebentar!',
+                    text: 'Proses penjadwalan sedang berlangsung...',
+                    icon: 'info',
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                        this.$refs.generateJadwalForm.submit();
+                    }
+                });
+            }, 'Apakah Anda yakin ingin menyusun jadwal? Pastikan data sudah lengkap.');
         } 
     }">
         <form id="generateJadwalForm" x-ref="generateJadwalForm" action="{{ route('wakilkurikulum.penjadwalan.generate') }}" method="POST"> 
             @csrf
+            <input type="hidden" name="tahun_ajaran_id" value="{{ request('tahun_ajaran_id') }}">
             <button type="button" x-on:click="confirmGenerate" class="w-44 bg-primaryColor text-whiteColor p-3 rounded-md flex space-x-4 items-center mb-4 ml-auto mt-5">
                 <span class="material-icons px-2">add_chart</span>
                 Susun Jadwal
