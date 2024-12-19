@@ -24,15 +24,22 @@ if (!function_exists('setActiveClass')) {
     {
         // Definisikan routes yang terkait dengan setiap menu
         $routeMap = [
-            'guru' => ['wakilkurikulum.guru.index', 'wakilkurikulum.guru.edit', 'wakilkurikulum.guru.create'],
-            'mapel' => ['wakilkurikulum.mapel.index', 'wakilkurikulum.mapel.edit', 'wakilkurikulum.mapel.create', 'wakilkurikulum.mapel.detail'],
-            'kelas' => ['wakilkurikulum.kelas.index', 'wakilkurikulum.kelas.edit', 'wakilkurikulum.kelas.create'],
-            'ruangan' => ['wakilkurikulum.ruangan.index', 'wakilkurikulum.ruangan.edit', 'wakilkurikulum.ruangan.create'],
-            'hari' => ['wakilkurikulum.hari.index', 'wakilkurikulum.hari.edit', 'wakilkurikulum.hari.create'],
-            'walikelas' => ['wakilkurikulum.walikelas.index', 'wakilkurikulum.walikelas.edit', 'wakilkurikulum.walikelas.create'],
-            'slotwaktu' => ['wakilkurikulum.slotwaktu.index', 'wakilkurikulum.slotwaktu.edit', 'wakilkurikulum.slotwaktu.create'],
-            'tahunajaran' => ['wakilkurikulum.tahunajaran.index', 'wakilkurikulum.tahunajaran.edit', 'wakilkurikulum.tahunajaran.create'],
+            'beranda' => ['admin.dashboard', 'wakilkurikulum.dashboard', 'guru.dashboard'],
+            'kelola_akun' => ['admin.user.index', 'admin.user.edit', 'admin.user.create'],
+            'guru' => ['admin.guru.index', 'admin.guru.edit', 'admin.guru.create'],
+            'kurikulum' => ['admin.kurikulum.index', 'admin.kurikulum.edit', 'admin.kurikulum.create'],
+            'mapel' => ['admin.mapel.index', 'admin.mapel.edit', 'admin.mapel.create', 'admin.mapel.detail'],
+            'kelas' => ['admin.kelas.index', 'admin.kelas.edit', 'admin.kelas.create'],
+            'ruangan' => ['admin.ruangan.index', 'admin.ruangan.edit', 'admin.ruangan.create'],
+            'hari' => ['admin.hari.index', 'admin.hari.edit', 'admin.hari.create'],
+            'walikelas' => ['admin.walikelas.index', 'admin.walikelas.edit', 'admin.walikelas.create'],
+            'tahunajaran' => ['admin.tahunajaran.index', 'admin.tahunajaran.edit', 'admin.tahunajaran.create'],
+            'jadwal' => ['admin.jadwal.index'],
+            'slotwaktu' => ['admin.slotwaktu.index', 'admin.slotwaktu.edit', 'admin.slotwaktu.create'],
             'tugasmengajar' => ['wakilkurikulum.tugasmengajar.index', 'wakilkurikulum.tugasmengajar.edit', 'wakilkurikulum.tugasmengajar.create'],
+            'penjadwalan' => ['wakilkurikulum.penjadwalan.index'],
+            'jadwalKeseluruhan' => ['guru.jadwal.index'],
+            'jadwalPribadi' => ['guru.jadwal.pribadi'],
             
         ];
 
