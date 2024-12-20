@@ -20,7 +20,7 @@
             <p class="flex">
                 <span class="w-4/12">Wali Kelas</span>
                 <span class="text-center">:</span>
-                <span class="font-medium ml-1">{{ $waliKelas->kelas->nama_kelas }}</span>
+                <span class="font-medium ml-1">{{ $waliKelas->kelas->tingkatanKelas->nama_tingkatan . $waliKelas->kelas->nama_kelas }}</span>
             </p>
         @endif
     </div>
