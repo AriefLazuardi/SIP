@@ -5,7 +5,7 @@ namespace App\Helpers;
 class RouteTitleHelper {
     public static function getTitle($route) {
         $titles = [
-            'profile.edit' => 'Akun',
+            'profile.edit' => 'Profil',
             'home' => 'Beranda',
             'admin.user.create' => 'Tambah Akun',
             'admin.user.edit' => 'Edit Data Akun',
