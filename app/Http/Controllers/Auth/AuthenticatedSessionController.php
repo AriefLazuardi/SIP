@@ -28,7 +28,8 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        return $this->redirectBasedOnRole();
+
     }
 
     /**
@@ -43,5 +44,19 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/');
+    }
+
+    private function redirectBasedOnRole(): RedirectResponse
+    {
+        if (Auth::user()->hasRole('administrator')) {
+            return redirect()->route('admin.dashboard');
+        } elseif (Auth::user()->hasRole('wakakurikulum')) {
+            return redirect()->route('wakilkurikulum.dashboard');
+        } elseif (Auth::user()->hasRole('guru')) {
+            return redirect()->route('guru.dashboard');
+        }
+
+        // Default redirect if no specific role matches
+        return redirect()->route('/');
     }
 }
