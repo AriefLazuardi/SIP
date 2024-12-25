@@ -36,7 +36,7 @@
                         <a href="{{ route('profile.edit') }}" class="block mr-2 py-2 text-sm hover:bg-gray-100">
                             <div class="flex justify-center space-x-4">
                                 <span class="material-icons y-10">person</span>
-                                <span class="translate-y-1">Akun</span>
+                                <span class="translate-y-1">Profil</span>
                             </div>
                         </a>
                         <!-- x-data -->
