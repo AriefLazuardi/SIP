@@ -47,6 +47,10 @@ class ProfileController extends Controller
 
         $user = $request->user();
 
+        if ($user->guru) {
+            $user->guru->update(['user_id' => null]);
+        }
+
         Auth::logout();
 
         $user->delete();
