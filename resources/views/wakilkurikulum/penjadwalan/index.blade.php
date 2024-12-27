@@ -36,7 +36,7 @@
             <x-dropdown-custom
                 name="tahun_ajaran_id"
                 :options="$tahunAjaran"
-                :selected="$selectedTahunAjaran"
+                :selected="session('selected_tahun_ajaran', $selectedTahunAjaran)"
                 placeholder="Pilih Tahun Ajaran"
                 onchange="this.form.submit(); tahunAjaranId = this.value"
                 class="w-80 mb-4 -mt-4"/>
@@ -198,9 +198,32 @@
 </div>
 @include('components.confirm-alert')
 
-@if (session('success'))
-    <x-success-alert message="Berhasil membuat Jadwal Mata pelajaran" icon="success" />
-@elseif (session('error'))
-    <x-error-alert title="Gagal!" message="Terjadi kesalahan dalam proses penjadwalan" icon="error" />
+
+@if (session('status') === 'penjadwalan-created')
+    <x-success-alert :message="session('message')" icon="success" />
+@elseif (session('status') === 'penjadwalan-error')
+    <x-penjadwalan-error-alert title="Gagal!" message="Terjadi Kesalahan Saat Membuat Jadwal" icon="error" />
+    @php
+    $errorMessage = session('message');
+    if (str_contains($errorMessage, 'Beberapa jadwal tidak dapat dialokasikan:')) {
+        $parts = explode(':\n', $errorMessage, 2);
+        echo '<div class="text-red-600 mt-4">';
+        echo '<p class="font-semibold">' . nl2br(e($parts[0])) . '</p>';
+        if (isset($parts[1])) {
+            // Pecah pesan per konflik
+            $conflicts = explode("\n\n", trim($parts[1])); 
+            echo '<ul class="list-disc list-inside mt-2 space-y-2">';
+            foreach ($conflicts as $conflict) {
+                if (trim($conflict) !== '') {
+                    echo '<li class="ml-4 whitespace-pre-line">' . nl2br(e(trim($conflict))) . '</li>';
+                }
+            }
+            echo '</ul>';
+        }
+        echo '</div>';
+    } else {
+        echo '<div class="text-red-600 mt-4">' . nl2br(e($errorMessage)) . '</div>';
+    }
+    @endphp
 @endif
 @endsection
