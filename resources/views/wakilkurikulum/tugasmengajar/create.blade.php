@@ -195,21 +195,9 @@
 </style>
 
 
-@if(session()->has('status'))
-    <div style="display:none">
-        {{ \Log::info('View Session Data', session()->all()) }}
-    </div>
-@endif
-
 @if (session('status') === 'tugasmengajar-created')
     <x-success-alert :message="session('message')" icon="success" />
 @elseif (session('status') === 'error')
-<script>
-    console.log("testing")
-</script>
-    <x-error-alert 
-        :message="session('message')" 
-        :icon="session('icon')" 
-    />
+    <x-error-alert :message="session('message')" icon="error" />
 @endif
 @endsection
