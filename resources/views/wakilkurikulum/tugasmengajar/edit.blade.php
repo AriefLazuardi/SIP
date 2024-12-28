@@ -164,6 +164,6 @@
 @if (session('status') === 'tugasmengajar-updated')
     <x-success-alert message="Berhasil mengupdate tugas mengajar" icon="success" />
 @elseif (session('status') === 'error')
-    <x-success-alert message="{{ session('message') }}"  icon="{{ session('icon') }}" />
+    <x-error-alert :message="session('message')" icon="error" />
 @endif
 @endsection
