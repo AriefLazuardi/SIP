@@ -5,7 +5,7 @@ SIP adalah sistem yang dirancang untuk membantu MIN 2 Pontianak dalam membuat da
 ## Fitur Utama
 
 -   **Pengelolaan Mata Pelajaran**: Tambah, edit, dan hapus mata pelajaran.
--   **Penjadwalan Otomatis**: Sistem otomatis untuk membuat jadwal berdasarkan mata pelajaran dan ketersediaan ruang kelas.
+-   **Penjadwalan Otomatis**: Sistem otomatis untuk membuat jadwal berdasarkan mata pelajaran dengan menerapkan algoritma Welch Powell.
 -   **Manajemen Pengguna**: Pengaturan akses untuk admin, wakil kepala kurikulum dan guru.
 -   **Laporan**: Fitur untuk mencetak dan mendownload laporan jadwal pelajaran.
 
