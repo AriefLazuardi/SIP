@@ -24,6 +24,12 @@ class JadwalController extends Controller
 
         $search = session('search', '');
 
+        $selectedTahunAjaran = $request->input('tahun_ajaran_id', session('selected_tahun_ajaran'));
+    
+        if (!$selectedTahunAjaran) {
+            $selectedTahunAjaran = $this->getCurrentTahunAjaranId();
+        }
+        
         // Ambil semua tahun ajaran untuk dropdown
         $tahunAjaran = TahunAjaran::all()->map(function ($tahun) {
             $mulaiYear = date('Y', strtotime($tahun->mulai));
@@ -37,7 +43,6 @@ class JadwalController extends Controller
           ->sortByDesc('period') 
           ->pluck('period', 'id');
 
-        $selectedTahunAjaran = $request->input('tahun_ajaran_id', $this->getCurrentTahunAjaranId());
         // Simpan state dalam session
         if ($request->has('tingkatan_kelas_id')) {
             session(['selected_tingkatan_kelas' => $request->tingkatan_kelas_id]);
@@ -99,7 +104,6 @@ class JadwalController extends Controller
         $slotWaktuArray = collect($slotWaktu)->keyBy('waktu')->toArray();
         $slotKhususArray = collect($slotKhusus)->keyBy('waktu')->toArray();
         $mergedSlots = array_replace($slotWaktuArray, $slotKhususArray);
-
 
         // Ambil semua kelas untuk tingkatan yang dipilih
         $kelas = Kelas::where('tingkatan_kelas_id', $selectedTingkatanKelas)
@@ -172,9 +176,15 @@ class JadwalController extends Controller
                 }
             }
         }
+        session([
+            'selected_tahun_ajaran' => $selectedTahunAjaran,
+            'selected_hari' => $selectedHari,
+            'selected_tingkatan_kelas' => $selectedTingkatanKelas,
+        ]);
 
-        return view('admin.jadwal.index', compact('jadwalMatrix','jadwalData', 'kelas', 'tahunAjaran', 'selectedTahunAjaran', 'selectedTingkatanKelas', 'selectedHari'));
+        return view('admin.jadwal.index', compact('jadwalMatrix', 'jadwalData', 'kelas', 'tahunAjaran', 'selectedTahunAjaran', 'selectedTingkatanKelas', 'selectedHari', 'search'));
     }
+
 
     private function getCurrentTahunAjaranId()
     {
