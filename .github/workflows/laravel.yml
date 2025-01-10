@@ -9,18 +9,13 @@ jobs:
     name: 🎉 Deploy website
     runs-on: ubuntu-latest
     steps:
-      # Checkout the repository
-      - name: 🚚 Get latest code
-        uses: actions/checkout@v4
-
-      # Debug secrets
-      - name: 🐛 Debug Secrets
-        run: echo "Server: ${{ secrets.FTP_SERVER }}"
-
-      # Sync files via FTP
-      - name: 📂 Sync files via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USER }}
-          password: ${{ secrets.FTP_PASS }}
+    # Checkout the repository
+    - name: 🚚 Get latest code
+      uses: actions/checkout@v4
+    # sync files via FTP
+    - name: 📂 Sync files via FTP
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      with:
+        server: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_USER }}
+        password: ${{ secrets.FTP_PASS }}
