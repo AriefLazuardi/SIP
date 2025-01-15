@@ -281,11 +281,16 @@ class PenjadwalanController extends Controller
                 }
             }
         }
+        // Visualisasi graf sebelum derajat simpul dihitung
+        // $this->visualizeGraph($adjacencyMatrix, $assignments);
     
         // Derajat simpul
         $degrees = array_map('array_sum', $adjacencyMatrix);
         arsort($degrees);
         $sortedVertices = array_keys($degrees);
+
+         // Visualisasi graf setelah derajat simpul dihitung
+        // $this->visualizeGraph($adjacencyMatrix, $assignments);
     
         // Pewarnaan graf
         $colors = [];
@@ -304,9 +309,13 @@ class PenjadwalanController extends Controller
             }
             $colors[$vertex] = $color;
         }
+
+        // Visualisasi graf dengan pewarnaan
+        // $this->visualizeGraphColor($adjacencyMatrix, $assignments, $colors);
     
         return $colors;
     }
+    
         
     private function allocateSlots($assignment, $totalHours, $availableSlots, &$finalSchedule, $tahunAjaranId, &$counter)
     {
@@ -521,6 +530,95 @@ class PenjadwalanController extends Controller
             return $slot->slotWaktuTingkatanKelas->tingkatan_kelas_id;
         });
     }
+    private function visualizeGraph($adjacencyMatrix, $assignments) {
+        // Buat gambar dengan PHP GD
+        $image = imagecreate(600, 600);
+        $background = imagecolorallocate($image, 255, 255, 255);
+        $lineColor = imagecolorallocate($image, 0, 0, 0);
+        $nodeColor = imagecolorallocate($image, 0, 128, 255);
+    
+        $radius = 200; // Radius lingkaran graf
+        $centerX = 300; $centerY = 300;
+        $nodes = count($adjacencyMatrix);
+    
+        // Hitung posisi node
+        $positions = [];
+        for ($i = 0; $i < $nodes; $i++) {
+            $angle = 2 * M_PI * $i / $nodes;
+            $positions[] = [
+                'x' => $centerX + $radius * cos($angle),
+                'y' => $centerY + $radius * sin($angle),
+            ];
+        }
+    
+        // Gambar edges
+        foreach ($adjacencyMatrix as $i => $row) {
+            foreach ($row as $j => $value) {
+                if ($value === 1) {
+                    imageline($image, $positions[$i]['x'], $positions[$i]['y'], $positions[$j]['x'], $positions[$j]['y'], $lineColor);
+                }
+            }
+        }
+    
+        // Gambar nodes
+        foreach ($positions as $pos) {
+            imagefilledellipse($image, $pos['x'], $pos['y'], 20, 20, $nodeColor);
+        }
+    
+        // Simpan atau tampilkan gambar
+        header('Content-Type: image/png');
+        imagepng($image);
+        imagedestroy($image);
+    }
+    private function visualizeGraphColor($adjacencyMatrix, $assignments, $colors)
+    {
+        // Buat gambar dengan PHP GD
+        $image = imagecreate(600, 600);
+        $background = imagecolorallocate($image, 255, 255, 255); // Warna latar belakang
+        $lineColor = imagecolorallocate($image, 0, 0, 0);        // Warna garis
+    
+        // Buat warna untuk node berdasarkan jumlah warna
+        $colorPalette = [];
+        foreach (range(1, max($colors)) as $i) {
+            $colorPalette[$i] = imagecolorallocate($image, rand(100, 255), rand(100, 255), rand(100, 255)); // Warna acak
+        }
+    
+        $radius = 200; // Radius lingkaran graf
+        $centerX = 300; $centerY = 300;
+        $nodes = count($adjacencyMatrix);
+    
+        // Hitung posisi node
+        $positions = [];
+        for ($i = 0; $i < $nodes; $i++) {
+            $angle = 2 * M_PI * $i / $nodes;
+            $positions[] = [
+                'x' => $centerX + $radius * cos($angle),
+                'y' => $centerY + $radius * sin($angle),
+            ];
+        }
+    
+        // Gambar edges
+        foreach ($adjacencyMatrix as $i => $row) {
+            foreach ($row as $j => $value) {
+                if ($value === 1) {
+                    imageline($image, $positions[$i]['x'], $positions[$i]['y'], $positions[$j]['x'], $positions[$j]['y'], $lineColor);
+                }
+            }
+        }
+    
+        // Gambar nodes dengan warna sesuai
+        foreach ($positions as $index => $pos) {
+            $nodeColor = $colorPalette[$colors[$index]]; // Pilih warna sesuai warna simpul
+            imagefilledellipse($image, $pos['x'], $pos['y'], 30, 30, $nodeColor);
+            imagestring($image, 5, $pos['x'] - 8, $pos['y'] - 8, $index + 1, $lineColor); // Tambahkan label node
+        }
+    
+        // Simpan atau tampilkan gambar
+        header('Content-Type: image/png');
+        imagepng($image);
+        imagedestroy($image);
+    }
+    
 
 
     private function getExcludedSlots()
