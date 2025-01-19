@@ -19,17 +19,19 @@ class TahunAjaranController extends Controller
     public function showTahunAjaran(Request $request)
     {
         $search = $request->input('search');
-        
+
         $tahunAjarans = TahunAjaran::when($search, function ($query, $search) {
-            return $query->where('mulai', 'like', '%' . $search . '%')
-                        ->orWhere('selesai', 'like', '%' . $search . '%');
-        })
-        ->get();
-    
-        $tahunAjaranCount = Tahunajaran::count();
-    
+                return $query->where('mulai', 'like', '%' . $search . '%')
+                            ->orWhere('selesai', 'like', '%' . $search . '%');
+            })
+            ->orderBy('mulai', 'asc') // Urutkan berdasarkan kolom 'mulai' secara ascending
+            ->get();
+
+        $tahunAjaranCount = TahunAjaran::count();
+
         return view('admin.tahunajaran.index', compact('tahunAjarans', 'tahunAjaranCount'));
     }
+
 
     public function storeTahunAjaran(Request $request)
     {
