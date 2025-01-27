@@ -195,7 +195,6 @@ class PenjadwalanController extends Controller
         if (!$tahunAjaranId) {
             $tahunAjaranId = $this->getCurrentTahunAjaranId();
         }
-        // dd($tahunAjaranId);
 
         DB::beginTransaction();
     
@@ -246,7 +245,7 @@ class PenjadwalanController extends Controller
                     $this->allocateSlots($assignment, $totalHours, $availableSlots, $finalSchedule, $tahunAjaranId, $counter);
                 }
             }
-    
+
             // Commit transaksi jika semua sukses
             DB::commit();
     
@@ -266,8 +265,7 @@ class PenjadwalanController extends Controller
         }
     }
         
-    private function colorGraph($assignments)
-    {
+    private function colorGraph($assignments) {
         $assignmentCount = $assignments->count();
         $adjacencyMatrix = array_fill(0, $assignmentCount, array_fill(0, $assignmentCount, 0));
     
@@ -281,6 +279,9 @@ class PenjadwalanController extends Controller
                 }
             }
         }
+
+        // $this->displayAdjacencyMatrix($adjacencyMatrix, $assignments);
+        
         // Visualisasi graf sebelum derajat simpul dihitung
         // $this->visualizeGraph($adjacencyMatrix, $assignments);
     
@@ -299,7 +300,7 @@ class PenjadwalanController extends Controller
             foreach ($adjacencyMatrix[$vertex] as $neighbor => $isConnected) {
                 if ($isConnected && isset($colors[$neighbor])) {
                     $usedColors[] = $colors[$neighbor];
-                }
+                }   
             }
     
             // Cari warna yang tersedia
@@ -310,15 +311,13 @@ class PenjadwalanController extends Controller
             $colors[$vertex] = $color;
         }
 
-        // Visualisasi graf dengan pewarnaan
+        // // Visualisasi graf dengan pewarnaan
         // $this->visualizeGraphColor($adjacencyMatrix, $assignments, $colors);
     
         return $colors;
     }
-    
-        
-    private function allocateSlots($assignment, $totalHours, $availableSlots, &$finalSchedule, $tahunAjaranId, &$counter)
-    {
+
+    private function allocateSlots($assignment, $totalHours, $availableSlots, &$finalSchedule, $tahunAjaranId, &$counter) {
         // Jika total jam per minggu <= 3, coba alokasikan berurutan dalam satu hari
         if ($totalHours <= 3) {
             $availableSlotsInOneDay = $availableSlots->groupBy('hari.nama_hari');
@@ -372,8 +371,7 @@ class PenjadwalanController extends Controller
         }
     }
 
-    private function allocateSlotsDefault($assignment, $totalHours, $availableSlots, &$finalSchedule, $tahunAjaranId, &$counter)
-    {
+    private function allocateSlotsDefault($assignment, $totalHours, $availableSlots, &$finalSchedule, $tahunAjaranId, &$counter) {
         // Ambil slot waktu berdasarkan warna
         $slotsForColor = $availableSlots->filter(function ($slot) use ($assignment, $finalSchedule) {
             return $this->isSlotAvailable($slot, $assignment, $finalSchedule);
@@ -474,8 +472,7 @@ class PenjadwalanController extends Controller
         }
     }
 
-    private function generateSlotCombinations($daySlots, $totalHours)
-    {
+    private function generateSlotCombinations($daySlots, $totalHours) {
         $combinations = [];
         $slotCount = $daySlots->count();
 
@@ -490,8 +487,7 @@ class PenjadwalanController extends Controller
         return $combinations;
     }
 
-    private function isSlotAvailable($slot, $assignment, $finalSchedule)
-    {
+    private function isSlotAvailable($slot, $assignment, $finalSchedule) {
         foreach ($finalSchedule as $schedule) {
             // Cek konflik guru pada hari dan waktu yang sama
             if ($schedule['teacher'] === $assignment->tugasMengajar->guru->name &&
@@ -511,8 +507,7 @@ class PenjadwalanController extends Controller
         return true;
     }
 
-    private function getAvailableSlotsByTingkatanKelas()
-    {
+    private function getAvailableSlotsByTingkatanKelas() {
         $excludedSlots = $this->getExcludedSlots();
             
         $slots = SlotWaktuMapping::with([
@@ -530,99 +525,8 @@ class PenjadwalanController extends Controller
             return $slot->slotWaktuTingkatanKelas->tingkatan_kelas_id;
         });
     }
-    private function visualizeGraph($adjacencyMatrix, $assignments) {
-        // Buat gambar dengan PHP GD
-        $image = imagecreate(600, 600);
-        $background = imagecolorallocate($image, 255, 255, 255);
-        $lineColor = imagecolorallocate($image, 0, 0, 0);
-        $nodeColor = imagecolorallocate($image, 0, 128, 255);
     
-        $radius = 200; // Radius lingkaran graf
-        $centerX = 300; $centerY = 300;
-        $nodes = count($adjacencyMatrix);
-    
-        // Hitung posisi node
-        $positions = [];
-        for ($i = 0; $i < $nodes; $i++) {
-            $angle = 2 * M_PI * $i / $nodes;
-            $positions[] = [
-                'x' => $centerX + $radius * cos($angle),
-                'y' => $centerY + $radius * sin($angle),
-            ];
-        }
-    
-        // Gambar edges
-        foreach ($adjacencyMatrix as $i => $row) {
-            foreach ($row as $j => $value) {
-                if ($value === 1) {
-                    imageline($image, $positions[$i]['x'], $positions[$i]['y'], $positions[$j]['x'], $positions[$j]['y'], $lineColor);
-                }
-            }
-        }
-    
-        // Gambar nodes
-        foreach ($positions as $pos) {
-            imagefilledellipse($image, $pos['x'], $pos['y'], 20, 20, $nodeColor);
-        }
-    
-        // Simpan atau tampilkan gambar
-        header('Content-Type: image/png');
-        imagepng($image);
-        imagedestroy($image);
-    }
-    private function visualizeGraphColor($adjacencyMatrix, $assignments, $colors)
-    {
-        // Buat gambar dengan PHP GD
-        $image = imagecreate(600, 600);
-        $background = imagecolorallocate($image, 255, 255, 255); // Warna latar belakang
-        $lineColor = imagecolorallocate($image, 0, 0, 0);        // Warna garis
-    
-        // Buat warna untuk node berdasarkan jumlah warna
-        $colorPalette = [];
-        foreach (range(1, max($colors)) as $i) {
-            $colorPalette[$i] = imagecolorallocate($image, rand(100, 255), rand(100, 255), rand(100, 255)); // Warna acak
-        }
-    
-        $radius = 200; // Radius lingkaran graf
-        $centerX = 300; $centerY = 300;
-        $nodes = count($adjacencyMatrix);
-    
-        // Hitung posisi node
-        $positions = [];
-        for ($i = 0; $i < $nodes; $i++) {
-            $angle = 2 * M_PI * $i / $nodes;
-            $positions[] = [
-                'x' => $centerX + $radius * cos($angle),
-                'y' => $centerY + $radius * sin($angle),
-            ];
-        }
-    
-        // Gambar edges
-        foreach ($adjacencyMatrix as $i => $row) {
-            foreach ($row as $j => $value) {
-                if ($value === 1) {
-                    imageline($image, $positions[$i]['x'], $positions[$i]['y'], $positions[$j]['x'], $positions[$j]['y'], $lineColor);
-                }
-            }
-        }
-    
-        // Gambar nodes dengan warna sesuai
-        foreach ($positions as $index => $pos) {
-            $nodeColor = $colorPalette[$colors[$index]]; // Pilih warna sesuai warna simpul
-            imagefilledellipse($image, $pos['x'], $pos['y'], 30, 30, $nodeColor);
-            imagestring($image, 5, $pos['x'] - 8, $pos['y'] - 8, $index + 1, $lineColor); // Tambahkan label node
-        }
-    
-        // Simpan atau tampilkan gambar
-        header('Content-Type: image/png');
-        imagepng($image);
-        imagedestroy($image);
-    }
-    
-
-
-    private function getExcludedSlots()
-    {
+    private function getExcludedSlots() {
         // Get slots to exclude (upacara and tadarus)
         $slotWaktuUpacara = DB::table('slot_waktu')
         ->join('slot_waktu_tingkatan_kelas', 'slot_waktu.id', '=', 'slot_waktu_tingkatan_kelas.slot_waktu_id')
@@ -679,8 +583,7 @@ class PenjadwalanController extends Controller
     }
 
 
-    private function getCurrentTahunAjaranId()
-    {
+    private function getCurrentTahunAjaranId() {
         $currentDate = now();
         $tahunAjaran = TahunAjaran::where('mulai', '<=', $currentDate)
         ->where('selesai', '>=', $currentDate)
@@ -689,8 +592,7 @@ class PenjadwalanController extends Controller
         return $tahunAjaran ? $tahunAjaran->id : null;
     }
 
-    public function cetakJadwalSemua(Request $request)
-    {
+    public function cetakJadwalSemua(Request $request) {
         try {
             // Ambil semua tahun ajaran untuk dropdown
             $tahunAjaran = TahunAjaran::all()->map(function ($tahun) {
@@ -867,6 +769,330 @@ class PenjadwalanController extends Controller
             \Log::error('Error in cetakJadwal: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
+    }
+
+    public function generatePowell(Request $request) {
+        set_time_limit(300);
+        $tahunAjaranId = $request->input('tahun_ajaran_id');
+
+        if (!$tahunAjaranId) {
+            $tahunAjaranId = $this->getCurrentTahunAjaranId();
+        }
+
+        DB::beginTransaction();
+    
+        try {
+            // Hapus jadwal yang sudah ada berdasarkan tahun ajaran
+            Jadwal::where('tahun_ajaran_id', $tahunAjaranId)->delete();
+    
+            // Ambil semua data tugas mengajar yang akan dijadwalkan
+            $teachingAssignments = KelasTugasMengajar::with([
+                'tugasMengajar.guru',
+                'tugasMengajar.mataPelajaran.detailMataPelajaran',
+                'kelas.tingkatanKelas'
+            ])->get();
+    
+            // Ambil slot waktu yang tersedia, dikelompokkan berdasarkan tingkatan kelas
+            $availableSlotsByTingkatan = $this->getAvailableSlotsByTingkatanKelas();
+    
+            $finalSchedule = [];
+            $counter = 0;
+    
+            // Kelompokkan tugas mengajar berdasarkan tingkatan kelas
+            $assignmentsByTingkatan = $teachingAssignments->groupBy(fn($assignment) => $assignment->kelas->tingkatanKelas->id);
+    
+            // Proses penjadwalan per tingkatan kelas
+            foreach ($assignmentsByTingkatan as $tingkatanId => $assignments) {
+                // Pastikan ada slot untuk tingkatan ini
+                if (!isset($availableSlotsByTingkatan[$tingkatanId]) || $availableSlotsByTingkatan[$tingkatanId]->isEmpty()) {
+                    Log::error("Tidak ada slot untuk tingkatan $tingkatanId");
+                    continue;
+                }
+    
+                $availableSlots = $availableSlotsByTingkatan[$tingkatanId];
+                $colors = $this->colorGraphView($assignments); // Panggil fungsi pewarnaan graf
+    
+                // Mapping hasil pewarnaan ke jadwal
+                foreach ($colors as $index => $color) {
+                    $assignment = $assignments[$index];
+                    $detail = $assignment->tugasMengajar->mataPelajaran->detailMataPelajaran
+                        ->where('tingkatan_kelas_id', $assignment->kelas->tingkatan_kelas_id)
+                        ->first();
+    
+                    if (!$detail) {
+                        Log::error('Detail mata pelajaran tidak ditemukan.');
+                        continue;
+                    }
+    
+                    $totalHours = $detail->total_jam_perminggu;
+                    $this->allocateSlots($assignment, $totalHours, $availableSlots, $finalSchedule, $tahunAjaranId, $counter);
+                }
+            }
+            die();
+    
+            // Commit transaksi jika semua sukses
+            DB::commit();
+    
+            return redirect()
+                ->route('wakilkurikulum.penjadwalan.index')
+                ->with('status', 'penjadwalan-created')
+                ->with('message', 'Berhasil membuat Jadwal Mata pelajaran');
+
+        } catch (\Exception $e) {
+            // Rollback transaksi jika terjadi error
+            DB::rollBack();
+            Log::error('Error dalam generate jadwal: ' . $e->getMessage());
+            return redirect()
+                ->back()
+                ->with('status','penjadwalan-error')
+                ->with('message', 'Terjadi kesalahan saat membuat jadwal: ' . $e->getMessage());
+        }
+    }
+
+    private function colorGraphView($assignments) {
+        $assignmentCount = $assignments->count();
+        $adjacencyMatrix = array_fill(0, $assignmentCount, array_fill(0, $assignmentCount, 0));
+    
+        // Cek konflik
+        foreach ($assignments as $i => $assignment1) {
+            foreach ($assignments as $j => $assignment2) {
+                if ($i !== $j && ($assignment1->tugasMengajar->guru_id === $assignment2->tugasMengajar->guru_id ||
+                    ($assignment1->kelas->tingkatan_kelas_id === $assignment2->kelas->tingkatan_kelas_id &&
+                    $assignment1->kelas_id === $assignment2->kelas_id))) {
+                    $adjacencyMatrix[$i][$j] = 1; // Ada konflik
+                }
+            }
+        }
+
+        $this->displayAdjacencyMatrix($adjacencyMatrix, $assignments);
+        
+        // Visualisasi graf sebelum derajat simpul dihitung
+        $this->visualizeGraph($adjacencyMatrix, $assignments);
+    
+        // Derajat simpul
+        $degrees = array_map('array_sum', $adjacencyMatrix);
+        arsort($degrees);
+        $sortedVertices = array_keys($degrees);
+
+         // Visualisasi graf setelah derajat simpul dihitung
+        $this->visualizeGraph($adjacencyMatrix, $assignments);
+    
+        // Pewarnaan graf
+        $colors = [];
+        foreach ($sortedVertices as $vertex) {
+            $usedColors = [];
+            foreach ($adjacencyMatrix[$vertex] as $neighbor => $isConnected) {
+                if ($isConnected && isset($colors[$neighbor])) {
+                    $usedColors[] = $colors[$neighbor];
+                }   
+            }
+    
+            // Cari warna yang tersedia
+            $color = 1;
+            while (in_array($color, $usedColors)) {
+                $color++;
+            }
+            $colors[$vertex] = $color;
+        }
+
+        // Visualisasi graf dengan pewarnaan
+        $this->visualizeGraphColor($adjacencyMatrix, $assignments, $colors);
+    
+        return $colors;
+    }
+
+    private function displayAdjacencyMatrix($adjacencyMatrix, $assignments) {
+        // Kelompokkan assignments berdasarkan tingkatan kelas
+        $groupedAssignments = [];
+        foreach ($assignments as $i => $assignment) {
+            $tingkatKelas = $assignment->kelas->tingkatan_kelas_id;
+            if (!isset($groupedAssignments[$tingkatKelas])) {
+                $groupedAssignments[$tingkatKelas] = [];
+            }
+            $groupedAssignments[$tingkatKelas][] = [
+                'index' => $i,
+                'assignment' => $assignment
+            ];
+        }
+        
+        // Urutkan berdasarkan tingkatan kelas
+        ksort($groupedAssignments);
+
+        echo "<h3>Matriks Ketetanggaan (Dikelompokkan per Tingkatan Kelas)</h3>";
+        echo "<div style='overflow-x: auto;'>";
+        echo "<table border='1' cellpadding='5' cellspacing='0' style='border-collapse: collapse; margin-bottom: 20px;'>";
+        
+        // Header kolom
+        echo "<tr><th>Node</th>";
+        foreach ($groupedAssignments as $tingkatKelas => $tingkatAssignments) {
+            echo "<th colspan='" . count($tingkatAssignments) . "' style='background-color: #f0f0f0;'>Tingkat " . $tingkatKelas . "</th>";
+        }
+        echo "</tr>";
+        
+        // Sub-header dengan nomor node dan mata pelajaran
+        echo "<tr><th></th>";
+        foreach ($groupedAssignments as $tingkatAssignments) {
+            foreach ($tingkatAssignments as $assignment) {
+                echo "<th>Node " . ($assignment['index'] + 1) . "<br>" .
+                    "<small>" . $assignment['assignment']->tugasMengajar->mataPelajaran->nama . "</small><br>" .
+                    "<small>Guru: " . $assignment['assignment']->tugasMengajar->guru->name . "</small><br>" .
+                    "<small>Kelas " . $assignment['assignment']->kelas->nama_kelas . "</small></th>";
+            }
+        }
+        echo "</tr>";
+        
+        // Isi matriks
+        foreach ($groupedAssignments as $tingkatKelas => $tingkatAssignments) {
+            // Header grup untuk baris
+            echo "<tr><th colspan='" . (count($assignments) + 1) . "' style='background-color: #f0f0f0; text-align: left;'>Tingkat " . $tingkatKelas . "</th></tr>";
+            
+            foreach ($tingkatAssignments as $rowAssignment) {
+                echo "<tr>";
+                // Label baris
+                echo "<td>Node " . ($rowAssignment['index'] + 1) . "<br>" .
+                    "<small>" . $rowAssignment['assignment']->tugasMengajar->mataPelajaran->nama . "</small><br>" .
+                    "<small>Guru: " . $rowAssignment['assignment']->tugasMengajar->guru->name . "</small><br>" .
+                    "<small>Kelas " . $rowAssignment['assignment']->kelas->nama_kelas . "</small></th>";
+                
+                // Nilai cell untuk setiap kolom
+                foreach ($assignments as $j => $colAssignment) {
+                    $value = $adjacencyMatrix[$rowAssignment['index']][$j];
+                    $backgroundColor = $value == 1 ? "#ffcccc" : "#ccffcc";
+                    $title = "Konflik antara:\n" . 
+                    "Node " . ($rowAssignment['index'] + 1) . ":\n" .
+                    "- " . $rowAssignment['assignment']->tugasMengajar->mataPelajaran->nama . "\n" .
+                    "- Guru: " . $rowAssignment['assignment']->tugasMengajar->guru->name . "\n" .
+                    "- Kelas: " . $rowAssignment['assignment']->kelas->nama_kelas . "\n\n" .
+                    "Node " . ($j + 1) . ":\n" .
+                    "- " . $colAssignment->tugasMengajar->mataPelajaran->nama . "\n" .
+                    "- Guru: " . $colAssignment->tugasMengajar->guru->name . "\n" .
+                    "- Kelas: " . $colAssignment->kelas->nama_kelas;
+                    
+                    echo "<td style='background-color: " . $backgroundColor . ";' title='" . htmlspecialchars($title) . "'>" . $value . "</td>";
+                }
+                echo "</tr>";
+            }
+        }
+        
+        echo "</table>";
+        echo "</div>";
+        
+        // Tampilkan legenda
+        echo "<div style='margin-top: 10px;'>";
+        echo "<p><strong>Legenda:</strong></p>";
+        echo "<ul style='list-style-type: none; padding: 0;'>";
+        echo "<li style='background-color: #ffcccc; padding: 5px; display: inline-block; margin-right: 10px;'>1 = Ada Konflik</li>";
+        echo "<li style='background-color: #ccffcc; padding: 5px; display: inline-block;'>0 = Tidak Ada Konflik</li>";
+        echo "</ul>";
+        echo "</div>";
+    }
+    
+    private function visualizeGraph($adjacencyMatrix, $assignments) {
+        // Buat gambar dengan PHP GD
+        $image = imagecreate(600, 600);
+        $background = imagecolorallocate($image, 255, 255, 255);
+        $lineColor = imagecolorallocate($image, 0, 0, 0);
+        $nodeColor = imagecolorallocate($image, 0, 128, 255);
+        $textColor = imagecolorallocate($image, 255, 255, 255);
+
+        $radius = 200; // Radius lingkaran graf
+        $centerX = 300; $centerY = 300;
+        $nodes = count($adjacencyMatrix);
+
+        // Hitung posisi node
+        $positions = [];
+        for ($i = 0; $i < $nodes; $i++) {
+            $angle = 2 * M_PI * $i / $nodes;
+            $positions[] = [
+                'x' => $centerX + $radius * cos($angle),
+                'y' => $centerY + $radius * sin($angle),
+            ];
+        }
+
+        // Gambar edges
+        foreach ($adjacencyMatrix as $i => $row) {
+            foreach ($row as $j => $value) {
+                if ($value === 1) {
+                    imageline($image, $positions[$i]['x'], $positions[$i]['y'], 
+                            $positions[$j]['x'], $positions[$j]['y'], $lineColor);
+                }
+            }
+        }
+
+        // Gambar nodes
+        foreach ($positions as $i => $pos) {
+            imagefilledellipse($image, $pos['x'], $pos['y'], 30, 30, $nodeColor);
+            imagestring($image, 5, $pos['x'] - 8, $pos['y'] - 8, $i + 1, $textColor);
+        }
+
+        // Simpan gambar sebagai PNG
+        ob_start();
+        imagepng($image);
+        $imageData = ob_get_clean();
+        imagedestroy($image);
+
+        // Tampilkan gambar dalam tag img dengan base64
+        echo "<h3>Visualisasi Graf</h3>";
+        echo '<img src="data:image/png;base64,' . base64_encode($imageData) . '" alt="Graph Visualization">';
+        echo "<br><br>";
+    }
+
+    // Fungsi untuk visualisasi graf berwarna
+    private function visualizeGraphColor($adjacencyMatrix, $assignments, $colors) {
+        // Buat gambar dengan PHP GD
+        $image = imagecreate(600, 600);
+        $background = imagecolorallocate($image, 255, 255, 255);
+        $lineColor = imagecolorallocate($image, 0, 0, 0);
+        $textColor = imagecolorallocate($image, 0, 0, 0);
+
+        // Buat warna untuk node
+        $colorPalette = [];
+        foreach (range(1, max($colors)) as $i) {
+            $colorPalette[$i] = imagecolorallocate($image, 
+                rand(100, 255), rand(100, 255), rand(100, 255));
+        }
+
+        $radius = 200;
+        $centerX = 300; $centerY = 300;
+        $nodes = count($adjacencyMatrix);
+
+        // Hitung posisi node
+        $positions = [];
+        for ($i = 0; $i < $nodes; $i++) {
+            $angle = 2 * M_PI * $i / $nodes;
+            $positions[] = [
+                'x' => $centerX + $radius * cos($angle),
+                'y' => $centerY + $radius * sin($angle),
+            ];
+        }
+
+        // Gambar edges
+        foreach ($adjacencyMatrix as $i => $row) {
+            foreach ($row as $j => $value) {
+                if ($value === 1) {
+                    imageline($image, $positions[$i]['x'], $positions[$i]['y'], 
+                            $positions[$j]['x'], $positions[$j]['y'], $lineColor);
+                }
+            }
+        }
+
+        // Gambar nodes dengan warna
+        foreach ($positions as $index => $pos) {
+            $nodeColor = $colorPalette[$colors[$index]];
+            imagefilledellipse($image, $pos['x'], $pos['y'], 30, 30, $nodeColor);
+            imagestring($image, 5, $pos['x'] - 8, $pos['y'] - 8, $index + 1, $textColor);
+        }
+
+        // Simpan gambar sebagai PNG
+        ob_start();
+        imagepng($image);
+        $imageData = ob_get_clean();
+        imagedestroy($image);
+
+        // Tampilkan gambar dalam tag img dengan base64
+        echo "<h3>Visualisasi Graf dengan Pewarnaan</h3>";
+        echo '<img src="data:image/png;base64,' . base64_encode($imageData) . '" alt="Colored Graph Visualization">';
+        echo "<br><br>";
     }
     
 }
