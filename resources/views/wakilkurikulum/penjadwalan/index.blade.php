@@ -14,7 +14,7 @@
                     <input 
                         type="text" 
                         name="search" 
-                        placeholder="Cari" 
+                        placeholder="Cari Guru" 
                         class="flex-grow border-0 focus:ring-0" 
                         x-model="search">
                 </form>
@@ -167,32 +167,59 @@
             </table>
         </div>
     </div>
-
-    <div x-data="{ 
-        confirmGenerate() { 
-            confirmAction(() => {
-                Swal.fire({
-                    title: 'Tunggu sebentar!',
-                    text: 'Proses penjadwalan sedang berlangsung...',
-                    icon: 'info',
-                    allowOutsideClick: false,
-                    showConfirmButton: false,
-                    didOpen: () => {
-                        Swal.showLoading();
-                        this.$refs.generateJadwalForm.submit();
-                    }
-                });
-            }, 'Apakah Anda yakin ingin menyusun jadwal? Pastikan data sudah lengkap.');
-        } 
-    }">
-        <form id="generateJadwalForm" x-ref="generateJadwalForm" action="{{ route('wakilkurikulum.penjadwalan.generate') }}" method="POST"> 
-            @csrf
-            <input type="hidden" name="tahun_ajaran_id" value="{{ request('tahun_ajaran_id') }}">
-            <button type="button" x-on:click="confirmGenerate" class="w-44 bg-primaryColor text-whiteColor p-3 rounded-md flex space-x-4 items-center mb-4 ml-auto mt-5">
-                <span class="material-icons px-2">add_chart</span>
-                Susun Jadwal
-            </button>
-        </form>
+    <!-- <div class="flex justify-between items-center mb-4">
+        <div x-data="{ 
+            confirmGeneratePowell() { 
+                confirmAction(() => {
+                    Swal.fire({
+                        title: 'Tunggu sebentar!',
+                        text: 'Proses Algoritma Welch-Powell sedang berlangsung...',
+                        icon: 'info',
+                        allowOutsideClick: false,
+                        showConfirmButton: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                            this.$refs.generateWelchPowell.submit();
+                        }
+                    });
+                }, 'Apakah Anda yakin ingin melihat Algoritma Welch-Powell? Pastikan data sudah lengkap.');
+            } 
+        }">
+            <form id="generateWelchPowell" x-ref="generateWelchPowell" action="{{ route('wakilkurikulum.penjadwalan.generatepowell') }}" method="POST"> 
+                @csrf
+                <input type="hidden" name="tahun_ajaran_id" value="{{ request('tahun_ajaran_id') }}">
+                <button type="button" x-on:click="confirmGeneratePowell" class="w-36 h-12 bg-primaryColor text-whiteColor p-3 rounded-md flex space-x-4 items-center mb-4 ml-auto mt-5 text-xs">
+                    <span class="material-icons px-2">timeline</span>
+                    Algoritma Welch-Powell
+                </button>
+            </form>
+        </div> -->
+        <div x-data="{ 
+            confirmGenerate() { 
+                confirmAction(() => {
+                    Swal.fire({
+                        title: 'Tunggu sebentar!',
+                        text: 'Proses penjadwalan sedang berlangsung...',
+                        icon: 'info',
+                        allowOutsideClick: false,
+                        showConfirmButton: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                            this.$refs.generateJadwalForm.submit();
+                        }
+                    });
+                }, 'Apakah Anda yakin ingin menyusun jadwal? Pastikan data sudah lengkap.');
+            } 
+        }">
+            <form id="generateJadwalForm" x-ref="generateJadwalForm" action="{{ route('wakilkurikulum.penjadwalan.generate') }}" method="POST"> 
+                @csrf
+                <input type="hidden" name="tahun_ajaran_id" value="{{ request('tahun_ajaran_id') }}">
+                <button type="button" x-on:click="confirmGenerate" class="w-44 bg-primaryColor text-whiteColor p-3 rounded-md flex space-x-4 items-center mb-4 ml-auto mt-5">
+                    <span class="material-icons px-2">add_chart</span>
+                    Susun Jadwal
+                </button>
+            </form>
+        </div>
     </div>
     @endif
 </div>
